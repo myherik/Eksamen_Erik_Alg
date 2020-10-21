@@ -88,38 +88,40 @@ public class EksamenSBinTre<T> {
         Node<T> p = rot;
         Node<T> q = null;  // Bruker disse til å komme fram til slutten av treet.
         boolean vh = false; // sjekker siste retning
-        boolean ikkeRot = false;
+        boolean sjekkerRot = false; // Passer på om treet har en rot eller ikke
 
-        while (p != null){
-            q = p;
-            if (comp.compare(verdi, p.verdi) < 0){
-                p = p.venstre;
-                vh = true;
-                ikkeRot = true;
+        if(p != null){ // Nå vet vi at verdien som skal legges inn ikke er roten og kan fortsette.
+            sjekkerRot = true;
+        }
+
+        while (p != null){ // så lenge p ikke er null må vi fortsette videre ned treet.
+            q = p; // Siden vi fortsetter ned treet er q den neste p
+            if (comp.compare(verdi, p.verdi) < 0){ // Sammenligner verdien med p og finner ut om vi skal til høyre
+                // eller venstre.
+                p = p.venstre; // går til venstre
+                vh = true; // viser til siste retning slik at vi kan sette barn til q.
             }
             else {
-                p = p.høyre;
-                vh = false;
-                ikkeRot = true;
+                p = p.høyre; // går til høyre
+                vh = false; // viser til siste retning slik at vi kan sette barn til q.
             }
         }
 
         // Nå er p kommet til slutten av treet der verdi skal legges inn.
 
         p = new Node<>(verdi, null, null, q); // Setter den verdien til p. q er forelder siden det var siste før p.
-        if (!ikkeRot){
-            p = rot;
+        if (!sjekkerRot){
+            p = rot; // Setter p til rot
         }
         else if (vh){
-            q.venstre = p;
+            q.venstre = p; // settter q sitt venstre barn til p.
         }
         else{
-            q.høyre = p;
+            q.høyre = p; // setter q sitt høyre barn til p.
         }
 
-
-        antall++;
-        return true;
+        antall++; // Legger til antall i treet.
+        return true; // Returnerer at verdien suksessfullt har blitt lagt til i treet.
 
     }
 
@@ -132,7 +134,7 @@ public class EksamenSBinTre<T> {
     }
 
     public int antall(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        
     }
 
     public void nullstill() {
