@@ -84,7 +84,43 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean leggInn(T verdi) {
-        
+
+        Node<T> p = rot;
+        Node<T> q = null;  // Bruker disse til å komme fram til slutten av treet.
+        boolean vh = false; // sjekker siste retning
+        boolean ikkeRot = false;
+
+        while (p != null){
+            q = p;
+            if (comp.compare(verdi, p.verdi) < 0){
+                p = p.venstre;
+                vh = true;
+                ikkeRot = true;
+            }
+            else {
+                p = p.høyre;
+                vh = false;
+                ikkeRot = true;
+            }
+        }
+
+        // Nå er p kommet til slutten av treet der verdi skal legges inn.
+
+        p = new Node<>(verdi, null, null, q); // Setter den verdien til p. q er forelder siden det var siste før p.
+        if (!ikkeRot){
+            p = rot;
+        }
+        else if (vh){
+            q.venstre = p;
+        }
+        else{
+            q.høyre = p;
+        }
+
+
+        antall++;
+        return true;
+
     }
 
     public boolean fjern(T verdi) {
