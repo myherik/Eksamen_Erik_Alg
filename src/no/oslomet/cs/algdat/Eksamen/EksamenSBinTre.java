@@ -84,7 +84,7 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        
     }
 
     public boolean fjern(T verdi) {
