@@ -111,7 +111,7 @@ public class EksamenSBinTre<T> {
 
         p = new Node<>(verdi, null, null, q); // Setter den verdien til p. q er forelder siden det var siste før p.
         if (!sjekkerRot){
-            p = rot; // Setter p til rot
+            rot = p; // Setter p til rot
         }
         else if (vh){
             q.venstre = p; // settter q sitt venstre barn til p.
@@ -134,7 +134,30 @@ public class EksamenSBinTre<T> {
     }
 
     public int antall(T verdi) {
-        
+
+        int teller = 0; // Hjelpevariabel
+        Node<T> p = rot;
+        if (p == null){
+            return 0;
+        }
+
+        while (p != null){
+            int  sammenligning = comp.compare(verdi, p.verdi);
+            if (sammenligning < 0){
+                p = p.venstre;
+            }
+            else if (sammenligning > 0){
+                p = p.høyre;
+            }
+            else {
+                teller++;
+                p = p.høyre;
+            }
+        }
+
+
+        return teller;
+
     }
 
     public void nullstill() {
