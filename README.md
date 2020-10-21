@@ -16,5 +16,11 @@ Se oblig-tekst for alle krav, og husk spesielt på følgende:
 
 Vi har brukt git til å dokumentere arbeidet vårt. Jeg har 16 commits totalt, og hver logg-melding beskriver det jeg har gjort av endringer.
 
-* Oppgave 1: Løste ved å implementere ...
-* Oppgave 2: ...
+* Oppgave 1: Løste ved å lage to node-variabler som jeg brukte til å finne meg fram til nederst i treet og på riktig
+plass via en while-løkke. Når jeg hadde funnet fram til dit verdien skulle innlegges er det 3 muligheter:
+1. verdien er roten
+2. verdien skal til høyre for forelder
+3. verdien skal til venstre for forelder
+Jeg brukte 2 boolske verdier for å vite hvilken av de tre mulighetene skulle utføres.
+
+* Oppgave 2: 
