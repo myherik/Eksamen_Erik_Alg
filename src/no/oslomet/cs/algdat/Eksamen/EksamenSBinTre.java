@@ -135,29 +135,23 @@ public class EksamenSBinTre<T> {
 
     public int antall(T verdi) {
 
-        int teller = 0; // Hjelpevariabel
-        Node<T> p = rot;
-        if (p == null){
-            return 0;
-        }
+        int teller = 0; // Tellevariabel
+        Node<T> p = rot; // Noden jeg er på akkurat nå
 
-        while (p != null){
-            int  sammenligning = comp.compare(verdi, p.verdi);
+        while (p != null){ // Går igjennom treet
+            int  sammenligning = comp.compare(verdi, p.verdi); // sammenligner for å vite hvor i treet pc'en må gå.
             if (sammenligning < 0){
-                p = p.venstre;
+                p = p.venstre; // Går til venstre
             }
             else if (sammenligning > 0){
-                p = p.høyre;
+                p = p.høyre; // Går til Høyre
             }
             else {
-                teller++;
-                p = p.høyre;
+                teller++; // Fant en lik verdi!
+                p = p.høyre; // Siden det kan være flere verdier fortsetter vi ned treet.
             }
         }
-
-
-        return teller;
-
+        return teller; // Returnerer teller
     }
 
     public void nullstill() {
