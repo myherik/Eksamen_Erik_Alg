@@ -1,6 +1,8 @@
 package no.oslomet.cs.algdat.Eksamen;
 
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -159,12 +161,37 @@ public class EksamenSBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        
+
+        boolean nederst = false;
+        while (!nederst){
+            if (p.venstre == null && p.høyre == null){
+                nederst = true;
+            }
+            else if (p.venstre != null){
+                p = p.venstre;
+            }
+            else {
+                p = p.høyre;
+            }
+        }
+        return p;
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        Node<T> returnode = null;
+        boolean funnetNoden = false;
+        if (p.forelder == null){
+            return returnode;
+        }
+        if (p.forelder.høyre != null && p.forelder.venstre == p){
+            returnode = førstePostorden(p.forelder.høyre);
+        }
+        else if (p.forelder.høyre == p || p.forelder.venstre == p){
+            returnode = p.forelder;
+        }
+        return returnode;
     }
+
 
     public void postorden(Oppgave<? super T> oppgave) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
