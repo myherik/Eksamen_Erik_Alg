@@ -1,12 +1,6 @@
 package no.oslomet.cs.algdat.Eksamen;
 
-
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class EksamenSBinTre<T> {
     private static final class Node<T>   // en indre nodeklasse
@@ -224,11 +218,25 @@ public class EksamenSBinTre<T> {
     }
 
     public ArrayList<T> serialize() {
-        
+        ArrayDeque<Node> ko = new ArrayDeque<>();
+        ArrayList<T> listen = new ArrayList<>();
+
+        ko.addLast(rot);
+        while(!ko.isEmpty()){
+            Node<T> noden = ko.removeFirst();
+            if (noden.venstre != null){
+                ko.addLast(noden.venstre);
+            }
+            if (noden.høyre != null){
+                ko.addLast(noden.høyre);
+            }
+            listen.add(noden.verdi);
+        }
+        return listen;
     }
 
     static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        
     }
 
 
