@@ -236,7 +236,13 @@ public class EksamenSBinTre<T> {
     }
 
     static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
+        EksamenSBinTre<K> nyttTre = new EksamenSBinTre<>(c);
+
+        for (int i = 0; i < data.size(); i++){
+            nyttTre.leggInn(data.get(i));
+        }
         
+        return nyttTre;
     }
 
 
