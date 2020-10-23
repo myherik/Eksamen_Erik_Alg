@@ -122,7 +122,7 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        
     }
 
     public int fjernAlle(T verdi) {
@@ -241,7 +241,7 @@ public class EksamenSBinTre<T> {
         for (int i = 0; i < data.size(); i++){
             nyttTre.leggInn(data.get(i));
         }
-        
+
         return nyttTre;
     }
 
