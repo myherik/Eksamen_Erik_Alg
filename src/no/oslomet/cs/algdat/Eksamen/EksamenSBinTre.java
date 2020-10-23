@@ -209,7 +209,18 @@ public class EksamenSBinTre<T> {
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (p == rot){
+            p = førstePostorden(p);
+            oppgave.utførOppgave(p.verdi);
+            postordenRecursive(p, oppgave);
+        }
+        else {
+            p = nestePostorden(p);
+            oppgave.utførOppgave(p.verdi);
+            if (nestePostorden(p) != null){
+                postordenRecursive(p, oppgave);
+            }
+        }
     }
 
     public ArrayList<T> serialize() {
