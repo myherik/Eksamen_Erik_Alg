@@ -122,105 +122,103 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        Node<T> current = rot;
+        Node<T> fjernNode = rot; // Noden som skal fjernes
 
-        while (current.verdi != verdi){
-            int sammenligner = comp.compare(verdi, current.verdi);
-            if (sammenligner < 0){
-                if (current.venstre != null){
-                    current = current.venstre;
+        while (fjernNode.verdi != verdi) { // Går igjennom treet og finner noden som skal fjernes i treet.
+            int sammenligner = comp.compare(verdi, fjernNode.verdi);
+            if (sammenligner < 0) { // Går til venstre i treet
+                if (fjernNode.venstre != null) { // Passer på at man faktisk kan gå til venstre i treet.
+                    fjernNode = fjernNode.venstre;
                 }
-                else return false;
+                else return false; // Hvis ikke så er ikke verdien i treet.
             }
-            else {
-                if (current.høyre != null){
-                    current = current.høyre;
+            else { // Går til høyre
+                if (fjernNode.høyre != null) { // Passer på at høyre eksisterer
+                    fjernNode = fjernNode.høyre;
                 }
-                else return false;
+                else return false; // Hvis ikke så er ikke verdien i treet.
             }
         }
-        if (current.forelder == null){
-            // hvis null barn
-            if (current.venstre == null && current.høyre == null){
+        if (fjernNode.forelder == null) { // Hvis noden er roten til treet, så har ikke noden en forelder.
+            if (fjernNode.høyre == null && fjernNode.venstre == null) { // Hvis 0 barn
                 rot = null;
             }
-            //  hvis 1 barn
-            if (current.høyre != null && current.venstre == null){
-                rot = current.høyre;
+            else if (fjernNode.venstre != null && fjernNode.høyre == null) { // Hvis venstrebarn
+                rot = fjernNode.venstre;
                 rot.forelder = null;
             }
-            else if (current.venstre != null && current.høyre == null){
-                rot = current.venstre;
+            else if (fjernNode.venstre == null) { // Hvis høyrebarn
+                rot = fjernNode.høyre;
                 rot.forelder = null;
             }
-            else { // 2 barn
-                if (current.høyre == null){
-                    return false;
+            else { // Hvis 2 barn
+                Node<T> hjelpeNode = fjernNode.høyre; // Hjelpenode til å bytte verdi
+                while (hjelpeNode.venstre != null) { // Finner første in-order node ved å gå så langt til venstre som mulig.
+                    hjelpeNode = hjelpeNode.venstre;
                 }
-                Node<T> hjelpenode = current.høyre;
-                while (hjelpenode.venstre != null){
-                    hjelpenode = hjelpenode.venstre;
+                if (hjelpeNode.høyre == null) { // Hvis in-order noden ikke har barn
+                    fjernNode.verdi = hjelpeNode.verdi;
+                    hjelpeNode.forelder.venstre = null;
+                    hjelpeNode.forelder = null;
                 }
-                current.verdi = hjelpenode.verdi;
-
-                // case 1 in-order har 0 barn
-                if (hjelpenode.høyre == null){
-                    hjelpenode.forelder.venstre = null;
-                }
-                else { // case 1 in-order 1 barn
-                    hjelpenode.forelder.venstre = hjelpenode.høyre;
-                    hjelpenode.høyre.forelder = hjelpenode.forelder;
+                else { // Hvis in-order noden har et høyre barn (kan selvsagt ikke ha et venstrebarn)
+                    fjernNode.verdi = hjelpeNode.verdi;
+                    hjelpeNode.forelder.venstre = hjelpeNode.høyre;
+                    hjelpeNode.høyre.forelder = hjelpeNode.forelder;
                 }
             }
         }
-        else {
-            if (current.venstre == null && current.høyre == null){ // 0 barn
-                if (current.forelder.venstre == current){
-                    current.forelder.venstre = null;
+        else { // Noden som fjernes er ikke roten, og kan dermed ha en foreldrenode!
+            if (fjernNode.venstre == null && fjernNode.høyre == null) { // Case 0 barn
+                if (fjernNode.forelder.venstre == fjernNode) { // Finner ut om noden som fjernes er venstrebarn
+                    fjernNode.forelder.venstre = null;
+                    fjernNode.forelder = null;
                 }
-                else {
-                    current.forelder.høyre = null;
-                }
-            }
-            else if (current.høyre != null && current.venstre == null){ // case høyrebarn
-                if (current.forelder.venstre == current){
-                    current.forelder.venstre = current.høyre;
-                    current.høyre.forelder = current.forelder;
-                }
-                else {
-                    current.forelder.høyre = current.høyre;
-                    current.høyre.forelder = current.forelder;
+                else { // noden som fjernes er høyrebarn
+                    fjernNode.forelder.høyre = null;
+                    fjernNode.forelder = null;
                 }
             }
-            else if (current.høyre == null){ // case venstrebarn
-                if (current.forelder.venstre == current){
-                    current.forelder.venstre = current.venstre;
-                    current.venstre.forelder = current.forelder;
+            else if (fjernNode.høyre != null && fjernNode.venstre == null) { // Noden som fjernes har et høyrebarn!
+                if (fjernNode.forelder.venstre == fjernNode) { // Finner ut om noden som fjernes er venstrebarn
+                    fjernNode.forelder.venstre = fjernNode.høyre;
+                    fjernNode.høyre.forelder = fjernNode.forelder;
                 }
-                else {
-                    current.forelder.høyre = current.venstre;
-                    current.venstre.forelder = current.forelder;
+                else { // noden som fjernes er høyrebarn
+                    fjernNode.forelder.høyre = fjernNode.høyre;
+                    fjernNode.høyre.forelder = fjernNode.forelder;
                 }
             }
-            else { // case 2 barn
-                Node<T> hjelpenode = current.høyre;
-                while (hjelpenode.venstre != null){
-                    hjelpenode = hjelpenode.venstre;
+            else if (fjernNode.høyre == null) { // Noden som fjernes har et venstrebarn!
+                if (fjernNode.forelder.venstre == fjernNode) { // Finner ut om noden som fjernes er venstrebarn
+                    fjernNode.forelder.venstre = fjernNode.venstre;
+                    fjernNode.venstre.forelder = fjernNode.forelder;
                 }
-                current.verdi = hjelpenode.verdi;
-
-                // case 1 in-order har 0 barn
-                if (hjelpenode.høyre == null){
-                    hjelpenode.forelder.venstre = null;
+                else { // noden som fjernes er høyrebarn
+                    fjernNode.forelder.høyre = fjernNode.venstre;
+                    fjernNode.venstre.forelder = fjernNode.forelder;
                 }
-                else { // case 1 in-order 1 barn
-                    hjelpenode.forelder.venstre = hjelpenode.høyre;
-                    hjelpenode.høyre.forelder = hjelpenode.forelder;
+            }
+            else { // Case 2 barn!
+                // Kopierte koden til 2 barn for rotnodefjerning ettersom den er akkurat like gyldig.
+                Node<T> hjelpeNode = fjernNode.høyre; // Hjelpenode til å bytte verdi
+                while (hjelpeNode.venstre != null) { // Finner første in-order node ved å gå så langt til venstre som mulig.
+                    hjelpeNode = hjelpeNode.venstre;
+                }
+                if (hjelpeNode.høyre == null) { // Hvis in-order noden ikke har barn
+                    fjernNode.verdi = hjelpeNode.verdi;
+                    hjelpeNode.forelder.venstre = null;
+                    hjelpeNode.forelder = null;
+                }
+                else { // Hvis in-order noden har et høyre barn (kan selvsagt ikke ha et venstrebarn)
+                    fjernNode.verdi = hjelpeNode.verdi;
+                    hjelpeNode.forelder.venstre = hjelpeNode.høyre;
+                    hjelpeNode.høyre.forelder = hjelpeNode.forelder;
                 }
             }
         }
-        antall--;
-        return true;
+        antall--; // Vi har suksessfullt fjernet en node og kan fjerne 1 fra antall
+        return true; // Returnerer true at vi har fjernet noden vår
     }
 
     public int fjernAlle(T verdi) {
