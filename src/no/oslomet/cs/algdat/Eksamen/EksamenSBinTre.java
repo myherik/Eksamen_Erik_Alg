@@ -252,7 +252,7 @@ public class EksamenSBinTre<T> {
     }
 
     public void nullstill() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
