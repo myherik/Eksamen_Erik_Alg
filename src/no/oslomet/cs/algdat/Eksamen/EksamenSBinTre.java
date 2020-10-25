@@ -223,11 +223,13 @@ public class EksamenSBinTre<T> {
 
     public int fjernAlle(T verdi) {
         int antallFjernes = antall(verdi);
+        int antallfjernet = 0;
         while (antallFjernes != 0){
             fjern(verdi);
             antallFjernes--;
+            antallfjernet++;
         }
-        return antallFjernes;
+        return antallfjernet;
     }
 
     public int antall(T verdi) {
