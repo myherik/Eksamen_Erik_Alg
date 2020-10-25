@@ -252,7 +252,9 @@ public class EksamenSBinTre<T> {
     }
 
     public void nullstill() {
-        
+        while (antall != 0){
+            fjern(rot.verdi);
+        }
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
