@@ -122,7 +122,105 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        
+        Node<T> current = rot;
+
+        while (current.verdi != verdi){
+            int sammenligner = comp.compare(verdi, current.verdi);
+            if (sammenligner < 0){
+                if (current.venstre != null){
+                    current = current.venstre;
+                }
+                else return false;
+            }
+            else {
+                if (current.høyre != null){
+                    current = current.høyre;
+                }
+                else return false;
+            }
+        }
+        if (current.forelder == null){
+            // hvis null barn
+            if (current.venstre == null && current.høyre == null){
+                rot = null;
+            }
+            //  hvis 1 barn
+            if (current.høyre != null && current.venstre == null){
+                rot = current.høyre;
+                rot.forelder = null;
+            }
+            else if (current.venstre != null && current.høyre == null){
+                rot = current.venstre;
+                rot.forelder = null;
+            }
+            else { // 2 barn
+                if (current.høyre == null){
+                    return false;
+                }
+                Node<T> hjelpenode = current.høyre;
+                while (hjelpenode.venstre != null){
+                    hjelpenode = hjelpenode.venstre;
+                }
+                current.verdi = hjelpenode.verdi;
+
+                // case 1 in-order har 0 barn
+                if (hjelpenode.høyre == null){
+                    hjelpenode.forelder.venstre = null;
+                }
+                else { // case 1 in-order 1 barn
+                    hjelpenode.forelder.venstre = hjelpenode.høyre;
+                    hjelpenode.høyre.forelder = hjelpenode.forelder;
+                }
+            }
+        }
+        else {
+            if (current.venstre == null && current.høyre == null){ // 0 barn
+                if (current.forelder.venstre == current){
+                    current.forelder.venstre = null;
+                }
+                else {
+                    current.forelder.høyre = null;
+                }
+            }
+            else if (current.høyre != null && current.venstre == null){ // case høyrebarn
+                if (current.forelder.venstre == current){
+                    current.forelder.venstre = current.høyre;
+                    current.høyre.forelder = current.forelder;
+                }
+                else {
+                    current.forelder.høyre = current.høyre;
+                    current.høyre.forelder = current.forelder;
+                }
+            }
+            else if (current.høyre == null){ // case venstrebarn
+                if (current.forelder.venstre == current){
+                    current.forelder.venstre = current.venstre;
+                    current.venstre.forelder = current.forelder;
+                }
+                else {
+                    current.forelder.høyre = current.venstre;
+                    current.venstre.forelder = current.forelder;
+                }
+            }
+            else { // case 2 barn
+                Node<T> hjelpenode = current.høyre;
+                while (hjelpenode.venstre != null){
+                    hjelpenode = hjelpenode.venstre;
+                }
+                current.verdi = hjelpenode.verdi;
+
+                // case 1 in-order har 0 barn
+                if (hjelpenode.høyre == null){
+                    hjelpenode.forelder.venstre = null;
+                }
+                else { // case 1 in-order 1 barn
+                    hjelpenode.forelder.venstre = hjelpenode.høyre;
+                    hjelpenode.høyre.forelder = hjelpenode.forelder;
+                }
+            }
+        }
+        antall--;
+        return true;
     }
 
     public int fjernAlle(T verdi) {
