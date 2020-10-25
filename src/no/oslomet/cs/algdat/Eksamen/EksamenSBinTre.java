@@ -222,7 +222,7 @@ public class EksamenSBinTre<T> {
     }
 
     public int fjernAlle(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        
     }
 
     public int antall(T verdi) {
