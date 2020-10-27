@@ -224,14 +224,14 @@ public class EksamenSBinTre<T> {
     }
 
     public int fjernAlle(T verdi) {
-        int antallFjernes = antall(verdi);
-        int antallfjernet = 0;
-        while (antallFjernes != 0){
-            fjern(verdi);
-            antallFjernes--;
-            antallfjernet++;
+        int antallFjernes = antall(verdi); // Jeg finner ut hvor mange noder det er av verdien som skal fjernes.
+        int antallfjernet = 0;  // Teller som teller hver gang en node er fjernet
+        while (antallFjernes != 0){ // Så lenge en node med verdien vi vil fjerne er i treet kjører denne.
+            fjern(verdi);   // Vi bruker fjern metoden vi lagde tidligere
+            antallFjernes--; // Oppdaterer teller som sier hvor mange vi har igjen
+            antallfjernet++;    // Oppdaterer teller som sier hvor mange vi har fjernet
         }
-        return antallfjernet;
+        return antallfjernet; // Vi returnerer hvor mange vi har fjernet.
     }
 
     public int antall(T verdi) {
@@ -256,50 +256,52 @@ public class EksamenSBinTre<T> {
     }
 
     public void nullstill() {
-        while (antall != 0){
+        while (antall != 0){    // Jeg vet at at treet alltid har en rot, dermed kan jeg bare bruke fjern metoden helt
+            // til treet er tomt.
             fjern(rot.verdi);
         }
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
 
-        boolean nederst = false;
-        while (!nederst){
-            if (p.venstre == null && p.høyre == null){
-                nederst = true;
+        boolean nederst = false;    // Sier om jeg har kommet nederst i treet.
+        while (!nederst){ // Hvis jeg ikke har kommet nederst i treet kjører denne metoden.
+            if (p.venstre == null && p.høyre == null){ // Leser om jeg faktisk har kommet nederst.
+                nederst = true; // Gjør nederst variabelen til true slik at jeg kommer meg ut av løkken.
             }
-            else if (p.venstre != null){
+            else if (p.venstre != null){ // Hvis ikke og noden jeg er på har et venstrebarn så går jeg til venstre i treet.
                 p = p.venstre;
             }
-            else {
+            else { // Hvis treet ikke har venstrebarn så går jeg til høyre i treet.
                 p = p.høyre;
             }
         }
-        return p;
+        return p; // Returnerer p ettersom den nederste noden i treet er førstePostorden fra den noden vi begynner fra.
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        Node<T> returnode = null;
-        boolean funnetNoden = false;
-        if (p.forelder == null){
-            return returnode;
+        Node<T> returnode = null;   // Noden vi skal returnere, altså neste postorden node.
+        boolean funnetNoden = false; // variabel som forteller oss om vi har funnet noden.
+        if (p.forelder == null){    // Hvis p er roten så er det ingen neste postorden.
+            return returnode;   // returnerer null
         }
-        if (p.forelder.høyre != null && p.forelder.venstre == p){
-            returnode = førstePostorden(p.forelder.høyre);
+        if (p.forelder.høyre != null && p.forelder.venstre == p){ // Hvis p er et venstrebarn og forelderen har et
+            // høyrebarn så gå vi dit.
+            returnode = førstePostorden(p.forelder.høyre); // Men vi finner førstepostorden fra den noden.
         }
-        else if (p.forelder.høyre == p || p.forelder.venstre == p){
-            returnode = p.forelder;
+        else if (p.forelder.høyre == p || p.forelder.venstre == p){ // Hvis p er alenebarn
+            returnode = p.forelder; // Så returnerer vi bare forelderen.
         }
-        return returnode;
+        return returnode; // Returnerer
     }
 
 
     public void postorden(Oppgave<? super T> oppgave) {
 
-        Node<T> noden = rot;
-        noden = førstePostorden(noden);
-        oppgave.utførOppgave(noden.verdi);
-        while (nestePostorden(noden) != null){
+        Node<T> noden = rot;    // Starter med rotenn
+        noden = førstePostorden(noden); // finner førstepostorden til noden;
+        oppgave.utførOppgave(noden.verdi); // Kaller på lambdafunksjonen gjennom interfacet og får ut førstepostorden
+        while (nestePostorden(noden) != null){  // Fortsetter gjennom hele treet til vi kommer tilbake til roten.
             noden = nestePostorden(noden);
             oppgave.utførOppgave(noden.verdi);
         }
@@ -310,46 +312,46 @@ public class EksamenSBinTre<T> {
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        if (p == rot){
+        if (p == rot){ // Gjør det samme som postorden metoden, bare reksurivt istedenfor.
             p = førstePostorden(p);
             oppgave.utførOppgave(p.verdi);
-            postordenRecursive(p, oppgave);
+            postordenRecursive(p, oppgave); // Når vi har håndtert roten kaller vi metoden på nytt (rekursivt)
         }
         else {
-            p = nestePostorden(p);
+            p = nestePostorden(p); // Fortsetter gjennom hele treet
             oppgave.utførOppgave(p.verdi);
-            if (nestePostorden(p) != null){
+            if (nestePostorden(p) != null){ // Bryter ut av rekursiviteten hvis vi har kommet tilbake til roten
                 postordenRecursive(p, oppgave);
             }
         }
     }
 
     public ArrayList<T> serialize() {
-        ArrayDeque<Node<T>> ko = new ArrayDeque<>();
-        ArrayList<T> listen = new ArrayList<>();
+        ArrayDeque<Node<T>> ko = new ArrayDeque<>(); // Definerer en kø
+        ArrayList<T> listen = new ArrayList<>();    // Definerer listen som skal returneres
 
-        ko.addLast(rot);
-        while(!ko.isEmpty()){
-            Node<T> noden = ko.removeFirst();
-            if (noden.venstre != null){
-                ko.addLast(noden.venstre);
+        ko.addLast(rot);    // Legger til roten til treet i køen
+        while(!ko.isEmpty()){   // Så lenge løen ikke er tom kjøres denne løkken
+            Node<T> noden = ko.removeFirst();   // Fjerner den første noden i køen samtidig som vi henter den
+            if (noden.venstre != null){ // Hvis noden vi hentet fra køen har et venstrebarn
+                ko.addLast(noden.venstre); // Legger vi venstrebarnet inn i køen.
             }
-            if (noden.høyre != null){
-                ko.addLast(noden.høyre);
+            if (noden.høyre != null){ // Hvis noden vi hentet fra køen har et høyrebarn
+                ko.addLast(noden.høyre); // Legger vi høyrebarnet inn i køen
             }
-            listen.add(noden.verdi);
+            listen.add(noden.verdi); // Legger noden (verdien) som vi hentet inn i listen.
         }
-        return listen;
+        return listen; // Returnerer hele treet i en liste.
     }
 
     static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
-        EksamenSBinTre<K> nyttTre = new EksamenSBinTre<>(c);
 
-        for (int i = 0; i < data.size(); i++){
-            nyttTre.leggInn(data.get(i));
+        EksamenSBinTre<K> nyttTre = new EksamenSBinTre<>(c); // Lager et tre som vi bruker til å returnere.
+
+        for (int i = 0; i < data.size(); i++){  // For løkke som går igjennom hele arrayet
+            nyttTre.leggInn(data.get(i)); // For hver verdi som er i arrayet legger vi det inn i treet.
         }
-
-        return nyttTre;
+        return nyttTre; // Returnerer treet.
     }
 
 
