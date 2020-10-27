@@ -116,6 +116,7 @@ public class EksamenSBinTre<T> {
             q.høyre = p; // setter q sitt høyre barn til p.
         }
 
+        endringer++; // Legger til i antall endringer.
         antall++; // Legger til antall i treet.
         return true; // Returnerer at verdien suksessfullt har blitt lagt til i treet.
 
@@ -217,6 +218,7 @@ public class EksamenSBinTre<T> {
                 }
             }
         }
+        endringer++; // Legger til at det har skjedd en endring
         antall--; // Vi har suksessfullt fjernet en node og kan fjerne 1 fra antall
         return true; // Returnerer true at vi har fjernet noden vår
     }
@@ -323,7 +325,7 @@ public class EksamenSBinTre<T> {
     }
 
     public ArrayList<T> serialize() {
-        ArrayDeque<Node> ko = new ArrayDeque<>();
+        ArrayDeque<Node<T>> ko = new ArrayDeque<>();
         ArrayList<T> listen = new ArrayList<>();
 
         ko.addLast(rot);
