@@ -281,7 +281,6 @@ public class EksamenSBinTre<T> {
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
         Node<T> returnode = null;   // Noden vi skal returnere, altså neste postorden node.
-        boolean funnetNoden = false; // variabel som forteller oss om vi har funnet noden.
         if (p.forelder == null){    // Hvis p er roten så er det ingen neste postorden.
             return returnode;   // returnerer null
         }
