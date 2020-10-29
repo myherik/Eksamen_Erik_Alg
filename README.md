@@ -14,7 +14,7 @@ Se oblig-tekst for alle krav, og husk spesielt på følgende:
 
 # Beskrivelse av oppgaveløsning (4-8 linjer/setninger per oppgave)
 
-Jeg har brukt git til å dokumentere arbeidet vårt. Jeg har 16 commits totalt, og hver logg-melding beskriver det jeg har gjort av endringer.
+Jeg har brukt git til å dokumentere arbeidet vårt. Jeg har 27 commits totalt, og hver logg-melding beskriver det jeg har gjort av endringer.
 
 * Oppgave 1: Løste ved å lage to node-variabler som jeg brukte til å finne meg fram til nederst i treet og på riktig
 plass via en while-løkke. Når jeg hadde funnet fram til dit verdien skulle innlegges er det 3 muligheter:
@@ -54,20 +54,8 @@ burde alle verdiene i treet ligge i listen, så den returneres.
 I deserialize definerer jeg et nytt tre. Jeg itererer gjennom hele den gitte listen hvor jeg legger inn en node i treet
 med legginn() metoden for hver verdi i listen. Returnerer treet til slutt.
 
-* Oppgave 6: Her slet jeg mye med fjern metoden og skrev den mange ganger men fikk alltid et problem som 
-nullpointerexception. Til slutt fikk jeg det til med noe jeg antar er en langgt mer komplisert metoden enn nødvendig.
-Jeg starter med å finne noden som skal fjernes i treet. Hvis noden som fjernes er rot så måtte jeg håndtere den på eget
-vis (forelder = null). Hvis rot og null barn, så bare gjorde jeg rot til null. Hvis ett barn gjorde jeg barnet til den
-nye roten og satte nodens foreldrepeker til null. Hvis 2 barn fant jeg første in-order. Så setter jeg første noden som 
-skulle fjernes sin verdi lik in-order nodens verdi. Hvis første in-order hadde et høyrebarn (kan ikke ha venstrebarn)
-setter jeg in-ordens forelder sitt venstrebarn til in-ordens høyre barn, og barnets forelder lik in-orden nodens forelder
-Hvis in-orden har null barn setter jeg forelderens venstrebarn til null og in-ordens forelder peker lik null.
-Hvis noden som fjernes ikke er er rot og den har 0 barn så sjekker jeg om noden er et venstrebarn eller høyrebarn. Hvis
-noden er venstrebarn setter jeg forelderens venstrepeker til null og samme hvis noden er høyrebarn. Så settes
-foreldrepekeren til noden til null. Hvis 1 barn sjekker jeg også om noden som fjernes er høyre eller venstrebarn. Men nå
-setter forelderens høyre/venstre peker til nodens barn, og barnets foreldrepeker til nodens forelder. Case for 2 barn
-er helt likt som for om noden som fjernes er rot, så jeg kopierte den koden der. Avslutter med å legge inn endring antall
-og returnerer true.
+* Oppgave 6: Her er det mye som skjer, men jeg håndterer alle tre casene om noden som fjernes er rot for seg selv, og 
+alle tre casene på nytt om noden ikke er rot.
 
 For fjernAlle() definerte jeg en int og satte den lik antall(verdi). I en while løkke så lenge int verdien ikke er null,
 så bruker jeg fjern metoden med verdi som input og oppdaterer int verdien. Til slutt returnerer jeg hvor mange som er
@@ -75,3 +63,39 @@ fjernet.
 
 For nullstill() så har jeg kun en while-løkke som kjører så lenge antall != 0. Inni while-løkken bruker jeg fjern metoden
 med rot som input siden treet alltid har en rot til det ikke er flere noder.
+
+# Forklaring til warnings (6)
+
+* 2x Non-ASCII characters in an identifier
+
+Dette er på grunn av oppgaven som har ø for "høyre" peker altså en non ASCII karakter.
+
+* Private constructor 'Node(T, no.oslomet.cs.algdat.Eksamen.EksamenSBinTre.Node<T>)' is never used
+
+Jeg hadde aldri bruk for denne nodekonstruktøren og får derfor warning på at den aldri er brukt.
+
+* Private field 'endringer' is assigned but never accessed
+
+Dette er nok fordi testen aldri bruker denne attributten til noe.
+
+* Method 'inneholder(T)' is never used
+
+Jeg hadde ikke behov for denne metoden, så får warning på at den ikke er brukt. 
+
+* Return value of the method is never used
+
+Dette referer slik jeg har forstått det til legginn metodens boolean return som aldri blir brukt.
+
+Weak warnings (6)
+
+* 2x Duplicated code fragment (14 lines long)
+
+Dette er fordi jeg kopierte koden for case 2 barn. Dette til rotfjerning og ikke-rot-fjerning. 
+
+* 3x Common part can be extracted from 'if'
+
+Dette er fordi det er ting som gjøres likt i både if og else.
+
+* Value 'returnode' is always 'null'
+
+Denne skjønner jeg ikke helt. Den påstår at returnoden i nestepostorden alltid er null. Det er den ikke.

@@ -347,8 +347,8 @@ public class EksamenSBinTre<T> {
 
         EksamenSBinTre<K> nyttTre = new EksamenSBinTre<>(c); // Lager et tre som vi bruker til å returnere.
 
-        for (int i = 0; i < data.size(); i++){  // For løkke som går igjennom hele arrayet
-            nyttTre.leggInn(data.get(i)); // For hver verdi som er i arrayet legger vi det inn i treet.
+        for (K datum : data) {  // For løkke som går igjennom hele arrayet
+            nyttTre.leggInn(datum); // For hver verdi som er i arrayet legger vi det inn i treet.
         }
         return nyttTre; // Returnerer treet.
     }
